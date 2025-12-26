@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethan Black | Offensive Security Engineer</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        'cyber-black': '#050505',
+                        'cyber-dark': '#0A0A0A',
+                        'cyber-gray': '#121212',
+                        'cyber-green': '#00FF41',
+                        'cyber-green-dim': 'rgba(0, 255, 65, 0.1)',
+                        'cyber-cyan': '#00F0FF',
+                        'cyber-text': '#C9D1D9',
+                        'cyber-muted': '#8B949E',
+                    },
+                    boxShadow: {
+                        'neon-green': '0 0 5px theme("colors.cyber-green"), 0 0 10px theme("colors.cyber-green")',
+                        'neon-cyan': '0 0 5px theme("colors.cyber-cyan"), 0 0 10px theme("colors.cyber-cyan")',
+                    },
+                    animation: {
+                        'blink': 'blink 1s step-end infinite',
+                        'scanline': 'scanline 8s linear infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        blink: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0' },
+                        },
+                        scanline: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #050505;
+            color: #C9D1D9;
+        }
+
+        /* Scanline Overlay */
+        .scanlines::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 50;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* Glitch Effect on Hover */
+        .glitch-hover:hover {
+            animation: glitch-anim 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+            color: #00FF41;
+        }
+
+        @keyframes glitch-anim {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border: 1px solid #00FF41;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00FF41;
+        }
+
+        .terminal-cursor::after {
+            content: '_';
+            animation: blink 1s step-end infinite;
+        }
+    </style>
+</head>
+<body class="font-mono text-sm md:text-base leading-relaxed antialiased selection:bg-cyber-green selection:text-black scanlines">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-40 bg-cyber-black/90 backdrop-blur border-b border-cyber-gray">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-cyber-green font-bold text-lg">&gt; blackbyte_</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="flex items-baseline space-x-8">
+                        <a href="#about" class="text-cyber-muted hover:text-cyber-green transition-colors duration-300">./about</a>
+                        <a href="#skills" class="text-cyber-muted hover:text-cyber-green transition-colors duration-300">./skills</a>
+                        <a href="#experience" class="text-cyber-muted hover:text-cyber-green transition-colors duration-300">./experience</a>
+                        <a href="#contact" class="px-3 py-1 border border-cyber-green text-cyber-green hover:bg-cyber-green hover:text-black transition-all duration-300 shadow-[0_0_10px_rgba(0,255,65,0.2)]">./contact</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
+        <!-- Matrix-like background effect (subtle) -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+            <div class="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-cyber-green to-transparent animate-scanline"></div>
+            <div class="absolute top-0 left-2/4 w-px h-full bg-gradient-to-b from-transparent via-cyber-green to-transparent animate-scanline" style="animation-delay: 2s"></div>
+            <div class="absolute top-0 left-3/4 w-px h-full bg-gradient-to-b from-transparent via-cyber-green to-transparent animate-scanline" style="animation-delay: 4s"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 w-full">
+            <div class="border-l-2 border-cyber-gray pl-6 md:pl-10 py-4">
+                <p class="text-cyber-green mb-4 font-bold text-lg terminal-cursor">root@kali:~# whoami</p>
+                
+                <h1 class="text-4xl md:text-7xl font-bold text-white mb-2 tracking-tighter">
+                    ETHAN BLACK
+                </h1>
+                
+                <h2 class="text-xl md:text-3xl text-cyber-muted mb-8 font-light">
+                    Offensive Security Engineer <span class="text-cyber-cyan">/</span> Penetration Tester
+                </h2>
+                
+                <p class="max-w-xl text-cyber-text mb-10 border-l border-cyber-green/50 pl-4 bg-cyber-green-dim py-2">
+                    // Red teaming, penetration testing, and adversary simulation.<br>
+                    // Breaking systems to make them stronger.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#skills" class="inline-flex items-center justify-center px-6 py-3 border border-cyber-green text-cyber-green font-bold hover:bg-cyber-green hover:text-black transition-all duration-300 shadow-[0_0_15px_rgba(0,255,65,0.15)] hover:shadow-[0_0_20px_rgba(0,255,65,0.4)] group">
+                        <i class="ph ph-terminal-window text-xl mr-2"></i>
+                        View_Skills
+                    </a>
+                    <a href="#contact" class="inline-flex items-center justify-center px-6 py-3 border border-cyber-gray text-cyber-muted font-bold hover:border-cyber-cyan hover:text-cyber-cyan transition-all duration-300">
+                        <i class="ph ph-paper-plane-right text-xl mr-2"></i>
+                        Contact_Me
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-cyber-dark border-y border-cyber-gray/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex flex-col md:flex-row gap-12 items-start">
+                
+                <!-- Terminal Window Graphic -->
+                <div class="w-full md:w-1/3 bg-cyber-gray rounded-t-lg border border-cyber-muted/30 overflow-hidden shadow-2xl">
+                    <div class="bg-cyber-black px-4 py-2 flex items-center gap-2 border-b border-cyber-muted/30">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <span class="ml-2 text-xs text-cyber-muted">bash — 80x24</span>
+                    </div>
+                    <div class="p-6 font-mono text-sm text-cyber-green bg-black min-h-[300px]">
+                        <p class="mb-2"><span class="text-blue-400">user@host</span>:<span class="text-blue-200">~</span>$ cat profile.txt</p>
+                        <p class="mb-4 text-cyber-text">
+                            Name: Ethan Black<br>
+                            Alias: blackbyte<br>
+                            Role: Red Teamer<br>
+                            Exp: 6+ Years<br>
+                            Status: Online
+                        </p>
+                        <p class="mb-2"><span class="text-blue-400">user@host</span>:<span class="text-blue-200">~</span>$ ./run_diagnostics.sh</p>
+                        <p class="text-cyber-text">
+                            [*] Initializing...<br>
+                            [+] Target Acquired<br>
+                            [+] Vulnerabilities Found<br>
+                            [+] Exploitation Successful<br>
+                            <span class="animate-blink">_</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-2/3 pt-4">
+                    <h2 class="text-2xl font-bold text-cyber-cyan mb-6 glitch-hover w-fit">&lt;About_The_Expert /&gt;</h2>
+                    <p class="text-cyber-text mb-6 text-lg leading-relaxed">
+                        I’m an offensive security engineer with over 6 years of experience identifying and exploiting real-world vulnerabilities. I specialize in simulating advanced cyber threats to help organizations understand their weaknesses before malicious actors do.
+                    </p>
+                    <p class="text-cyber-text mb-8 leading-relaxed">
+                        My methodology goes beyond automated scanning. I perform deep-dive manual analysis, custom payload development, and full-scope red team operations to test the resilience of people, processes, and technology.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex items-center gap-3 p-3 border border-cyber-gray hover:border-cyber-green transition-colors bg-cyber-black/50">
+                            <i class="ph ph-globe text-cyber-green text-xl"></i>
+                            <span>Web App Security</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 border border-cyber-gray hover:border-cyber-green transition-colors bg-cyber-black/50">
+                            <i class="ph ph-network text-cyber-green text-xl"></i>
+                            <span>Network Pentesting</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 border border-cyber-gray hover:border-cyber-green transition-colors bg-cyber-black/50">
+                            <i class="ph ph-user-switch text-cyber-green text-xl"></i>
+                            <span>Active Directory</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 border border-cyber-gray hover:border-cyber-green transition-colors bg-cyber-black/50">
+                            <i class="ph ph-cloud-warning text-cyber-green text-xl"></i>
+                            <span>Cloud Security</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <h2 class="text-2xl font-bold text-cyber-green mb-12 glitch-hover w-fit">&lt;Skills_&_Arsenal /&gt;</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Technical Skills -->
+                <div>
+                    <h3 class="text-lg text-cyber-cyan mb-6 flex items-center">
+                        <i class="ph ph-code mr-2"></i> // Technical_Capabilities
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-cyber-gray/20 border border-cyber-gray p-4 hover:border-cyber-green transition-all group">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-bold text-white group-hover:text-cyber-green">Web Exploitation</span>
+                                <span class="text-cyber-muted text-xs">OWASP TOP 10</span>
+                            </div>
+                            <div class="w-full bg-cyber-gray h-1">
+                                <div class="bg-cyber-green h-1 w-[95%] shadow-[0_0_10px_#00FF41]"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-cyber-gray/20 border border-cyber-gray p-4 hover:border-cyber-green transition-all group">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-bold text-white group-hover:text-cyber-green">Privilege Escalation</span>
+                                <span class="text-cyber-muted text-xs">LINUX / WINDOWS</span>
+                            </div>
+                            <div class="w-full bg-cyber-gray h-1">
+                                <div class="bg-cyber-green h-1 w-[90%] shadow-[0_0_10px_#00FF41]"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-cyber-gray/20 border border-cyber-gray p-4 hover:border-cyber-green transition-all group">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-bold text-white group-hover:text-cyber-green">Active Directory</span>
+                                <span class="text-cyber-muted text-xs">KERBEROS / LDAP</span>
+                            </div>
+                            <div class="w-full bg-cyber-gray h-1">
+                                <div class="bg-cyber-green h-1 w-[85%] shadow-[0_0_10px_#00FF41]"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-cyber-gray/20 border border-cyber-gray p-4 hover:border-cyber-green transition-all group">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-bold text-white group-hover:text-cyber-green">Social Engineering</span>
+                                <span class="text-cyber-muted text-xs">OSINT / PHISHING</span>
+                            </div>
+                            <div class="w-full bg-cyber-gray h-1">
+                                <div class="bg-cyber-green h-1 w-[80%] shadow-[0_0_10px_#00FF41]"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools -->
+                <div>
+                    <h3 class="text-lg text-cyber-cyan mb-6 flex items-center">
+                        <i class="ph ph-wrench mr-2"></i> // Tooling_&_Frameworks
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 border border-cyber-gray bg-cyber-black text-center hover:bg-cyber-gray/30 hover:border-cyber-cyan hover:text-cyber-cyan transition-all cursor-crosshair">
+                            <i class="ph ph-skull text-3xl mb-2"></i>
+                            <div class="text-sm font-bold">Metasploit</div>
+                        </div>
+                        <div class="p-4 border border-cyber-gray bg-cyber-black text-center hover:bg-cyber-gray/30 hover:border-cyber-cyan hover:text-cyber-cyan transition-all cursor-crosshair">
+                            <i class="ph ph-bug text-3xl mb-2"></i>
+                            <div class="text-sm font-bold">Burp Suite Pro</div>
+                        </div>
+                        <div class="p-4 border border-cyber-gray bg-cyber-black text-center hover:bg-cyber-gray/30 hover:border-cyber-cyan hover:text-cyber-cyan transition-all cursor-crosshair">
+                            <i class="ph ph-radar text-3xl mb-2"></i>
+                            <div class="text-sm font-bold">Cobalt Strike</div>
+                        </div>
+                        <div class="p-4 border border-cyber-gray bg-cyber-black text-center hover:bg-cyber-gray/30 hover:border-cyber-cyan hover:text-cyber-cyan transition-all cursor-crosshair">
+                            <i class="ph ph-graph text-3xl mb-2"></i>
+                            <div class="text-sm font-bold">BloodHound</div>
+                        </div>
+                        <div class="p-4 border border-cyber-gray bg-cyber-black text-center hover:bg-cyber-gray/30 hover:border-cyber-cyan hover:text-cyber-cyan transition-all cursor-crosshair">
+                            <i class="ph ph-wifi-high text-3xl mb-2"></i>
+                            <div class="text-sm font-bold">Aircrack-ng</div>
+                        </div>
+                        <div class="p-4 border border-cyber-gray bg-cyber-black text-center hover:bg-cyber-gray/30 hover:border-cyber-cyan hover:text-cyber-cyan transition-all cursor-crosshair">
+                            <i class="ph ph-linux-logo text-3xl mb-2"></i>
+                            <div class="text-sm font-bold">Kali / Parrot</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience & Certs -->
+    <section id="experience" class="py-24 bg-cyber-dark border-y border-cyber-gray/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <!-- Experience Timeline -->
+                <div>
+                    <h2 class="text-2xl font-bold text-cyber-green mb-8 glitch-hover w-fit">&lt;Execution_History /&gt;</h2>
+                    <div class="relative border-l border-cyber-gray ml-3 space-y-12">
+                        
+                        <!-- Item 1 -->
+                        <div class="relative pl-8">
+                            <div class="absolute -left-[5px] top-2 w-3 h-3 bg-cyber-green rounded-full shadow-neon-green"></div>
+                            <div class="text-xs text-cyber-cyan mb-1 font-bold tracking-widest">[2021 - PRESENT]</div>
+                            <h3 class="text-xl font-bold text-white mb-1">Senior Penetration Tester</h3>
+                            <div class="text-cyber-muted text-sm mb-4">RedSec Labs</div>
+                            <ul class="list-disc list-inside text-cyber-text space-y-2 text-sm">
+                                <li>Conducted internal & external pentests for financial institutions.</li>
+                                <li>Simulated advanced persistent threats (APT) using custom malware.</li>
+                                <li>Delivered executive-level security reports detailing risk impact.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="relative pl-8">
+                            <div class="absolute -left-[5px] top-2 w-3 h-3 bg-cyber-gray border border-cyber-green rounded-full"></div>
+                            <div class="text-xs text-cyber-cyan mb-1 font-bold tracking-widest">[2019 - PRESENT]</div>
+                            <h3 class="text-xl font-bold text-white mb-1">Independent Bug Bounty Hunter</h3>
+                            <div class="text-cyber-muted text-sm mb-4">HackerOne / Bugcrowd</div>
+                            <ul class="list-disc list-inside text-cyber-text space-y-2 text-sm">
+                                <li>Reported critical RCE & SQLi vulnerabilities to Fortune 500s.</li>
+                                <li>Specialized in broken access control & authentication bypass.</li>
+                                <li>Ranked in top 5% of researchers on platform.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certifications -->
+                <div>
+                    <h2 class="text-2xl font-bold text-cyber-green mb-8 glitch-hover w-fit">&lt;Credentials_Verified /&gt;</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center p-4 border border-cyber-gray bg-cyber-black hover:border-cyber-green transition-all group">
+                            <div class="w-12 h-12 flex items-center justify-center bg-cyber-gray/20 rounded border border-cyber-green text-cyber-green group-hover:bg-cyber-green group-hover:text-black transition-colors">
+                                <i class="ph ph-certificate text-2xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-white font-bold group-hover:text-cyber-green transition-colors">OSCP</h3>
+                                <p class="text-cyber-muted text-sm">Offensive Security Certified Professional</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center p-4 border border-cyber-gray bg-cyber-black hover:border-cyber-green transition-all group">
+                            <div class="w-12 h-12 flex items-center justify-center bg-cyber-gray/20 rounded border border-cyber-green text-cyber-green group-hover:bg-cyber-green group-hover:text-black transition-colors">
+                                <i class="ph ph-shield-check text-2xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-white font-bold group-hover:text-cyber-green transition-colors">CRTO</h3>
+                                <p class="text-cyber-muted text-sm">Certified Red Team Operator</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center p-4 border border-cyber-gray bg-cyber-black hover:border-cyber-green transition-all group">
+                            <div class="w-12 h-12 flex items-center justify-center bg-cyber-gray/20 rounded border border-cyber-green text-cyber-green group-hover:bg-cyber-green group-hover:text-black transition-colors">
+                                <i class="ph ph-lock-key-open text-2xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-white font-bold group-hover:text-cyber-green transition-colors">PNPT</h3>
+                                <p class="text-cyber-muted text-sm">Practical Network Penetration Tester</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional "Stats" Decorator -->
+                    <div class="mt-8 p-4 border border-dashed border-cyber-gray/50 font-mono text-xs text-cyber-muted">
+                        <p class="mb-1">ROOT_ACCESS_COUNT: <span class="text-cyber-cyan">420+</span></p>
+                        <p class="mb-1">BUGS_REPORTED: <span class="text-cyber-cyan">150+</span></p>
+                        <p>COFFEE_CONSUMED: <span class="text-red-500">NaN</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 relative overflow-hidden">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 relative z-10 text-center">
+            
+            <p class="text-cyber-green mb-2 animate-pulse-slow">&gt; initiate_handshake</p>
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight">connect --secure</h2>
+            
+            <div class="bg-cyber-gray/20 backdrop-blur border border-cyber-gray p-8 rounded-lg">
+                <p class="text-cyber-text mb-8">
+                    Available for engagements. Secure communication channels open.
+                </p>
+                
+                <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+                    <a href="mailto:ethan.black@securitymail.com" class="flex items-center gap-3 text-white hover:text-cyber-green transition-colors group">
+                        <div class="p-2 border border-cyber-gray group-hover:border-cyber-green rounded bg-cyber-black">
+                            <i class="ph ph-envelope-simple text-xl"></i>
+                        </div>
+                        <span class="font-mono">ethan.black@securitymail.com</span>
+                    </a>
+                    
+                    <a href="https://www.linkedin.com" class="flex items-center gap-3 text-white hover:text-cyber-cyan transition-colors group">
+                        <div class="p-2 border border-cyber-gray group-hover:border-cyber-cyan rounded bg-cyber-black">
+                            <i class="ph ph-linkedin-logo text-xl"></i>
+                        </div>
+                        <span class="font-mono">/in/ethanblack</span>
+                    </a>
+
+                    <a href="https://www.github.com" class="flex items-center gap-3 text-white hover:text-purple-400 transition-colors group">
+                        <div class="p-2 border border-cyber-gray group-hover:border-purple-400 rounded bg-cyber-black">
+                            <i class="ph ph-github-logo text-xl"></i>
+                        </div>
+                        <span class="font-mono">/blackbyte</span>
+                    </a>
+                </div>
+            </div>
+
+            <footer class="mt-16 text-cyber-muted text-xs">
+                <p>&copy; 2024 Ethan Black. All systems operational.</p>
+                <p>Build By <a href="https://www.facebook.com/profile.php?id=100063808086007"><u>OcaByte.</u></a></p>
+                <p class="mt-2 text-cyber-gray">UID: 0 | GID: 0 (root)</p>
+            </footer>
+        </div>
+    </section>
+
+</body>
+</html>
